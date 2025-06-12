@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="CalcButton" parent="Base.Theme.IOSCalculatorClone">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_margin">2dp</item>
+        <item name="android:layout_columnWeight">1</item>
+        <item name="android:layout_rowWeight">1</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="CalcButton.Dark" parent="CalcButton">
+        <item name="android:background">@drawable/shape_btn_dark</item>
+    </style>
+
+    <style name="CalcButton.Gray" parent="CalcButton">
+        <item name="android:background">@drawable/shape_btn_gray</item>
+    </style>
+
+    <style name="CalcButton.Orange" parent="CalcButton">
+        <item name="android:background">@drawable/shape_btn_orange</item>
+    </style>
+</resources>
