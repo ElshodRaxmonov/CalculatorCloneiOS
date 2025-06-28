@@ -15,7 +15,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.List">
+            android:theme="@style/Theme.IOSCalculatorClone">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

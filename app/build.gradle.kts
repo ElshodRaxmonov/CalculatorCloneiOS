@@ -36,7 +36,7 @@ android {
         jvmTarget = "11"
     }
     buildFeatures{
-        viewBinding=true
+        dataBinding=true
     }
 }
 
@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation (libs.androidx.activity.ktx)
     implementation (libs.androidx.fragment.ktx)
+    //Expression Builder
     implementation(libs.exp4j)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.navigation.fragment.ktx)

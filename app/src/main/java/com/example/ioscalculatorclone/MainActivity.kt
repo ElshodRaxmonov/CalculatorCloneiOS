@@ -1,11 +1,11 @@
 package com.example.ioscalculatorclone
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
+import androidx.databinding.DataBindingUtil
 import com.example.ioscalculatorclone.databinding.ActivityMainBinding
 
 
@@ -15,19 +15,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        viewModel.display.observe(
-            this, Observer {
-                binding.tvDisplay.text = it
-            }
-        )
-        viewModel.operation.observe(
-            this, Observer {
-                binding.writtenOperation.text = it
-            }
-        )
+        binding.myViewModel = viewModel
+        binding.lifecycleOwner = this
+
         val numberButtons = listOf<Button>(
             binding.btn0,
             binding.btn1,
@@ -40,67 +32,70 @@ class MainActivity : AppCompatActivity() {
             binding.btn8,
             binding.btn9
         )
-        val operatorButtons = listOf<Button>(
-            binding.btnPlus,
-            binding.btnEquals,
-            binding.btnDivide,
-            binding.btnMinus,
-            binding.btnMultiply
-        )
+
         numberButtons.forEach { btn ->
             btn.setOnClickListener {
                 viewModel.onNumberClick(btn.text.toString())
             }
         }
 
-        binding.btnDot.setOnClickListener {
-            viewModel.onNumberClick(".")
-        }
-
-        binding.btnPlus.setOnClickListener {
-            if (viewModel.lastResult == "Undefined") {
-                return@setOnClickListener
-            } else {
-                viewModel.onOperatorClick("+")
-            }
-        }
-        binding.btnMinus.setOnClickListener {
-            if (viewModel.lastResult == "Undefined") {
-                return@setOnClickListener
-            } else {
-                viewModel.onOperatorClick("-")
-            }
-        }
-        binding.btnMultiply.setOnClickListener {
-            if (viewModel.lastResult == "Undefined") {
-                return@setOnClickListener
-            } else {
-                viewModel.onOperatorClick("*")
-            }
-        }
-        binding.btnDivide.setOnClickListener {
-            if (viewModel.lastResult == "Undefined") {
-                return@setOnClickListener
-            } else {
-                viewModel.onOperatorClick("/")
-            }
-        }
-        binding.btnEquals.setOnClickListener {
-            if (viewModel.lastResult == "Undefined" || !viewModel.currentInput.contains(
-                    Regex("[+\\-*/]")
-                ) || viewModel.currentInput.matches(Regex(".*[+\\-*/]$"))
-                || viewModel.lastOperation=="minusNumber"
-                    ) {
-                return@setOnClickListener
-            } else {
-                viewModel.onEqualsClick()
-                binding.writtenOperation.text = viewModel.lastOperation
+        binding.apply {
+            btnDot.setOnClickListener {
+                viewModel.onNumberClick(".")
             }
 
-        }
+            btnPlus.setOnClickListener {
+                if (viewModel.lastResult == "Undefined") {
+                    return@setOnClickListener
+                } else {
+                    viewModel.onOperatorClick("+")
+                }
+            }
+            btnMinus.setOnClickListener {
+                if (viewModel.lastResult == "Undefined") {
+                    return@setOnClickListener
+                } else {
+                    viewModel.onOperatorClick("-")
+                }
+            }
+            btnMultiply.setOnClickListener {
+                if (viewModel.lastResult == "Undefined") {
+                    return@setOnClickListener
+                } else {
+                    viewModel.onOperatorClick("*")
+                }
+            }
+            btnDivide.setOnClickListener {
+                if (viewModel.lastResult == "Undefined") {
+                    return@setOnClickListener
+                } else {
+                    viewModel.onOperatorClick("/")
+                }
+            }
+            btnEquals.setOnClickListener {
+                if (viewModel.lastResult == "Undefined" || !viewModel.currentInput.contains(
+                        Regex("[+\\-*/%]")
+                    ) || viewModel.currentInput.matches(Regex(".*[+\\-*/]$"))
+                    || viewModel.lastOperation == "minusNumber"
+                ) {
+                    return@setOnClickListener
+                } else {
+                    viewModel.onEqualsClick()
+                    binding.writtenOperation.text = viewModel.lastOperation
+                }
 
-        binding.btnAC.setOnClickListener {
-            viewModel.onClearClick()
+            }
+
+            btnAC.setOnClickListener {
+                viewModel.onClearClick()
+            }
+            removed.setOnClickListener {
+                viewModel.onOperatorClick("%")
+            }
+            btnToast.setOnClickListener {
+                Toast.makeText(this@MainActivity, "<Mr.ElshodDev/>", Toast.LENGTH_SHORT).show()
+
+            }
         }
     }
 }

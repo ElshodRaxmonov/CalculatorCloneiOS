@@ -1,13 +1,15 @@
 package com.example.ioscalculatorclone
 
+
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import net.objecthunter.exp4j.ExpressionBuilder
 
+
 class CalculatorViewModel : ViewModel() {
-    val TAG = "Correction"
+
     private val _display = MutableLiveData("0")
     val display: LiveData<String> = _display as LiveData<String>
     private val _operation = MutableLiveData("")
@@ -16,6 +18,7 @@ class CalculatorViewModel : ViewModel() {
     var currentInput = "0"
     var lastResult = ""
     var lastOperation = ""
+
 
     fun onNumberClick(value: String) {
         if (lastResult.isNotEmpty() && lastOperation.isNotEmpty()) {
@@ -30,18 +33,12 @@ class CalculatorViewModel : ViewModel() {
             lastOperation = ""
             _operation.value = lastOperation
         }
-//        if (lastOperation.isNotEmpty() && lastOperation != "newAction") {
-//            lastOperation = "newAction"
-//            currentInput = ""
-//            _operation.value = ""
-//        }
+
         if (value == "." && currentInput.contains(".")) return
         if (value == "." && currentInput == "") {
             currentInput += "0"
         }
 
-
-//                || (currentInput.replace(Regex("(?<=[\\-+*/])\\."), ""))
 
         currentInput += value
         if (value == ".") {
@@ -49,13 +46,12 @@ class CalculatorViewModel : ViewModel() {
                 .replace(Regex("(?<=[\\-+*/])\\."), "0.")
         }
         _display.value = currentInput
+        Log.d("TAG", "calculate: $currentInput")
     }
 
     fun onOperatorClick(op: String) {
 
-//        if (lastOperation == "newAction") {
-//            currentInput = lastResult
-//        }
+
         if (lastOperation == "minusNumber") lastOperation = ""
         if (currentInput == "0" && op == "-") {
             currentInput = op
@@ -102,6 +98,11 @@ class CalculatorViewModel : ViewModel() {
                 }
             }
 
+            '%' -> {
+                currentInput = replaceIfOperatorAtEnd(currentInput, op[0])
+                _display.value = currentInput
+            }
+
             else -> {
                 currentInput += op
                 _display.value = currentInput
@@ -112,6 +113,7 @@ class CalculatorViewModel : ViewModel() {
     }
 
     fun onEqualsClick() {
+        Log.d("TAG", "calculate: $currentInput")
         if (lastOperation != "minusNumber") {
 
             currentInput = currentInput.replace(Regex("\\.(?=[\\-+*/])"), "").removeSuffix(".")
@@ -139,7 +141,10 @@ class CalculatorViewModel : ViewModel() {
     fun calculate(expression: String): String {
         var calcResult: String = ""
         try {
+
+
             var expr = ExpressionBuilder(expression).build().evaluate()
+            Log.d("TAG", "calculate: $expr")
 
             calcResult = when {
                 expr.isNaN() || expr.isInfinite() -> "Undefined"
@@ -157,7 +162,7 @@ class CalculatorViewModel : ViewModel() {
     }
 
     fun replaceIfOperatorAtEnd(input: String, replacement: Char): String {
-        return if (input.isNotEmpty() && input.last() in listOf('+', '-', '*', '/')) {
+        return if (input.isNotEmpty() && input.last() in listOf('+', '-', '*', '/', '%')) {
             input.dropLast(1) + replacement
         } else {
             input
