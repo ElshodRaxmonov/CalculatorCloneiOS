@@ -18,7 +18,7 @@ LiveData for reactive state updates
 🧠 LiveData – For reactive UI updates
 🔍 Kotlin Regex – For input filtering & validation
 
-📦 Dependency
+📦 Dependency (for gradle)
 
 
 ```gradle
