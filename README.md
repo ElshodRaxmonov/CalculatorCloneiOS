@@ -9,14 +9,18 @@ Math expression parsing with exp4j
 Input handling with Kotlin Regex
 
 LiveData for reactive state updates
-![scren-portrait](https://github.com/user-attachments/assets/f4f9f79b-2a7c-4ab0-abe5-adcc41ee0435)
+<img src="scren-portrait.png" width="300" alt="iOSCalculatorCloneApp Screenshot" />
 
 🧩 Libraries & Utilities
 
 🔢 [exp4j](https://github.com/fasseg/exp4j) by [André Rouél](https://github.com/fasseg) – Lightweight Java library for evaluating mathematical expressions. Used for parsing calculator input.
+
 🧠 LiveData – For reactive UI updates
 🔍 Kotlin Regex – For input filtering & validation
 
 📦 Dependency
-// Expression Evaluator
+
+
+```gradle
 implementation("net.objecthunter:exp4j:0.4.8")
+ ``` 
